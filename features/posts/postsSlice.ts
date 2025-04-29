@@ -14,11 +14,13 @@ const initialState: PostsState = {
   error: null,
 };
 
-// Получение всех постов
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await axios.get<Post[]>('/api/posts');
-  return response.data;
-});
+export const fetchPosts = createAsyncThunk(
+    'posts/fetchPosts',
+    async ({ page = 1, limit = 5 }: { page: number; limit: number }) => {
+      const response = await axios.get<Post[]>(`/api/posts?page=${page}&limit=${limit}`);
+      return response.data;
+    }
+);
 
 export const postsSlice = createSlice({
   name: 'posts',
