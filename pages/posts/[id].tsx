@@ -46,6 +46,17 @@ export default function PostPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this post?')) {
+      try {
+        await api.delete(`/api/posts/${id}`);
+        router.push('/');
+      } catch (err) {
+        console.error('Failed to delete post', err);
+      }
+    }
+  };
+
   const onSubmit = async (data: { content: string }) => {
     try {
       await api.post(`/api/posts/${id}/comments`, data);
@@ -66,6 +77,14 @@ export default function PostPage() {
         <p className="text-gray-700">{post.content}</p>
         <Link href={`/edit/${post.id}`} className="text-blue-500 underline">Edit Post</Link>
       </div>
+
+      <Button 
+        variant="outlined" 
+        color="error" 
+        onClick={handleDelete}
+      >
+        Delete Post
+      </Button>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Comments</h2>
