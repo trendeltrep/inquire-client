@@ -36,7 +36,7 @@ export default function EditPostPage() {
 
   const fetchPost = async () => {
     try {
-      const response = await api.get<Post>(`/api/posts/${id}`);
+      const response = await api.get<Post>(`/posts/${id}`);
       reset({
         title: response.data.title,
         content: response.data.content,
@@ -50,7 +50,7 @@ export default function EditPostPage() {
 
   const onSubmit = async (data: PostFormData) => {
     try {
-      await api.put(`/api/posts/${id}`, data);
+      await api.put(`/posts/${id}`, data);
       router.push(`/posts/${id}`);
     } catch (err) {
       console.error('Failed to update post');
@@ -62,31 +62,41 @@ export default function EditPostPage() {
 
   return (
     <main className="p-4 max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Edit Post</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <TextField
-          label="Title"
-          fullWidth
-          {...register('title')}
-          error={!!errors.title}
-          helperText={errors.title?.message}
-        />
+      <Button variant='contained' onClick={() => router.push('/')} className="mb-4">
+        Home
+      </Button>
 
-        <TextField
-          label="Content"
-          fullWidth
-          multiline
-          rows={6}
-          {...register('content')}
-          error={!!errors.content}
-          helperText={errors.content?.message}
-        />
+      <h1 className="text-3xl font-bold mt-4">Edit Post</h1>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div>
+          <TextField
+            label="Title"
+            fullWidth
+            {...register('title')}
+            error={!!errors.title}
+            helperText={errors.title?.message}
+          />
+        </div>
+
+        <div>
+          <TextField
+            label="Content"
+            fullWidth
+            multiline
+            rows={6}
+            {...register('content')}
+            error={!!errors.content}
+            helperText={errors.content?.message}
+          />
+        </div>
 
         <Button type="submit" variant="contained" disabled={isSubmitting}>
           {isSubmitting ? 'Updating...' : 'Update Post'}
         </Button>
       </form>
+
     </main>
   );
 }

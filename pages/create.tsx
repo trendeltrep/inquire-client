@@ -24,8 +24,8 @@ export default function CreatePostPage() {
 
   const onSubmit = async (data: PostFormData) => {
     try {
-      await api.post('/api/posts', data);
-      router.push('/'); // После создания возвращаем на главную
+      await api.post('/posts', data);
+      router.push('/');
     } catch (error) {
       console.error('Failed to create post', error);
     }
@@ -33,7 +33,12 @@ export default function CreatePostPage() {
 
   return (
     <main className="p-4 max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Create New Post</h1>
+
+      <Button variant='contained' onClick={() => router.push('/')}>
+        Home
+      </Button>
+
+      <h1 className="text-3xl font-bold mt-4">Create New Post</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <TextField

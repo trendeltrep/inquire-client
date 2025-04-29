@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { Comment } from '../../types';
-import axios from 'axios';
+import api from '../../services/api';
 
 interface CommentsState {
   comments: Comment[];
@@ -14,11 +14,10 @@ const initialState: CommentsState = {
   error: null,
 };
 
-// Получение комментариев для поста
 export const fetchComments = createAsyncThunk(
   'comments/fetchComments',
   async (postId: number) => {
-    const response = await axios.get<Comment[]>(`/api/posts/${postId}/comments`);
+    const response = await api.get<Comment[]>(`/posts/${postId}/comments`); 
     return response.data;
   }
 );

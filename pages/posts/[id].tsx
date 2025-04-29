@@ -37,7 +37,7 @@ export default function PostPage() {
 
   const fetchPost = async () => {
     try {
-      const response = await api.get<Post>(`/api/posts/${id}`);
+      const response = await api.get<Post>(`/posts/${id}`);
       setPost(response.data);
       setLoading(false);
     } catch (err) {
@@ -49,7 +49,7 @@ export default function PostPage() {
   const handleDelete = async () => {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
-        await api.delete(`/api/posts/${id}`);
+        await api.delete(`/posts/${id}`);
         router.push('/');
       } catch (err) {
         console.error('Failed to delete post', err);
@@ -59,7 +59,7 @@ export default function PostPage() {
 
   const onSubmit = async (data: { content: string }) => {
     try {
-      await api.post(`/api/posts/${id}/comments`, data);
+      await api.post(`/posts/${id}/comments`, data);
       dispatch(fetchComments(Number(id)));
       reset();
     } catch (err) {
@@ -72,6 +72,14 @@ export default function PostPage() {
 
   return (
     <main className="p-4 space-y-8">
+
+      <Button 
+        variant="contained" 
+        onClick={() => router.push('/')}
+      >
+        Home
+      </Button>
+
       <div className="space-y-2">
         <h1 className="text-3xl font-bold">{post.title}</h1>
         <p className="text-gray-700">{post.content}</p>
