@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import api from '../services/api';
+import api from '@/services/api';
 import { TextField, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -40,24 +40,28 @@ export default function CreatePostPage() {
 
       <h1 className="text-3xl font-bold mt-4">Create New Post</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <TextField
-          label="Title"
-          fullWidth
-          {...register('title')}
-          error={!!errors.title}
-          helperText={errors.title?.message}
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <div>
+          <TextField
+            label="Title"
+            fullWidth
+            {...register('title')}
+            error={!!errors.title}
+            helperText={errors.title?.message}
+          />
+        </div>
 
-        <TextField
-          label="Content"
-          fullWidth
-          multiline
-          rows={6}
-          {...register('content')}
-          error={!!errors.content}
-          helperText={errors.content?.message}
-        />
+        <div>
+          <TextField
+            label="Content"
+            fullWidth
+            multiline
+            rows={6}
+            {...register('content')}
+            error={!!errors.content}
+            helperText={errors.content?.message}
+          />
+        </div>
 
         <Button type="submit" variant="contained" disabled={isSubmitting}>
           {isSubmitting ? 'Creating...' : 'Create Post'}

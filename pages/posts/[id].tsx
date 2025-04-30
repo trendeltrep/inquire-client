@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { fetchComments } from '../../features/comments/commentsSlice';
-import api from '../../services/api';
-import { Post } from '../../types';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchComments } from '@/features/comments/commentsSlice';
+import api from '@/services/api';
+import { Post } from '@/types';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -72,27 +72,30 @@ export default function PostPage() {
 
   return (
     <main className="p-4 space-y-8">
-
-      <Button 
-        variant="contained" 
-        onClick={() => router.push('/')}
-      >
-        Home
-      </Button>
+      <div>
+        <Button 
+          variant="contained" 
+          onClick={() => router.push('/')}
+        >
+          Home
+        </Button>
+      </div>
 
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">{post.title}</h1>
-        <p className="text-gray-700">{post.content}</p>
+        <h1 className="text-3xl font-bold">Title: {post.title}</h1>
+        <p className="text-gray-500">Content: {post.content}</p>
         <Link href={`/edit/${post.id}`} className="text-blue-500 underline">Edit Post</Link>
       </div>
 
-      <Button 
-        variant="outlined" 
-        color="error" 
-        onClick={handleDelete}
-      >
-        Delete Post
-      </Button>
+      <div>
+        <Button 
+          variant="outlined" 
+          color="error" 
+          onClick={handleDelete}
+        >
+          Delete Post
+        </Button>
+      </div>
 
       <section className="space-y-4">
         <h2 className="text-2xl font-semibold">Comments</h2>
@@ -109,14 +112,19 @@ export default function PostPage() {
         </ul>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <TextField
-            label="Add Comment"
-            fullWidth
-            {...register('content')}
-            error={!!errors.content}
-            helperText={errors.content?.message}
-          />
-          <Button type="submit" variant="contained">Submit</Button>
+          <div>
+            <TextField
+              label="Add Comment"
+              fullWidth
+              {...register('content')}
+              error={!!errors.content}
+              helperText={errors.content?.message}
+            />
+          </div>
+
+          <div>
+            <Button type="submit" variant="contained">Submit</Button>
+          </div>
         </form>
       </section>
     </main>

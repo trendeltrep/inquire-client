@@ -1,30 +1,30 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { fetchAllPosts, fetchPosts } from '../features/posts/postsSlice';
-import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchAllPosts, fetchPosts } from '@/features/posts/postsSlice';
 import { Button, TextField } from '@mui/material';
-
+import PostListItem from '@/components/PostListItem';
+import PaginationControls from '@/components/PaginationControls';
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const { posts, loading, error } = useAppSelector((state) => state.posts);
 
   const [page, setPage] = useState(1);
-  const [POSTS_PER_PAGE, setPOSTS_PER_PAGE] = useState(5);
+  const POSTS_PER_PAGE = 5;
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (search.length > 0) {
-      dispatch(fetchAllPosts()); 
+      dispatch(fetchAllPosts());
     } else {
       dispatch(fetchPosts({ page, limit: POSTS_PER_PAGE }));
     }
   }, [dispatch, page, search]);
-  
 
   const handleNext = () => {
-    if (filteredPosts.length === 5) {  
-      setPage((prev) => prev + 1);}
+    if (filteredPosts.length === POSTS_PER_PAGE) {
+      setPage((prev) => prev + 1);
+    }
   };
 
   const handlePrev = () => {
@@ -49,9 +49,9 @@ export default function Home() {
       <h1 className="text-3xl font-bold mb-4">Posts</h1>
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-        <Link href="/create" className="text-blue-500 underline">
+        <a href="/create" className="text-blue-500 underline">
           Create New Post
-        </Link>
+        </a>
 
         <TextField
           label="Search by title"
@@ -64,30 +64,20 @@ export default function Home() {
 
       <ul className="mt-4 space-y-4">
         {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            <Link href={`/posts/${post.id}`} className="text-xl font-semibold ">
-              <li key={post.id} className="border m-4 p-1 rounded shadow">
-                {post.title}
-                <p className="text-gray-400">{post.content.slice(0, 100)}</p>
-              </li>
-            </Link>
-          ))
+          filteredPosts.map((post) => <PostListItem key={post.id} post={post} />)
         ) : (
           <p>No posts found.</p>
         )}
       </ul>
 
       {search.length === 0 && (
-        <div className="flex gap-4 justify-center mt-8">
-          <Button variant="outlined" onClick={handlePrev} disabled={page === 1}>
-            Previous
-          </Button>
-          <Button variant="contained" onClick={handleNext} disabled={filteredPosts.length < 5}>
-            Next
-          </Button>
-        </div>
+        <PaginationControls
+          onNext={handleNext}
+          onPrev={handlePrev}
+          page={page}
+          hasNextPage={filteredPosts.length === POSTS_PER_PAGE}
+        />
       )}
-
     </main>
   );
 }

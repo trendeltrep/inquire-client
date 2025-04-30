@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Comment } from '../../types';
-import api from '../../services/api';
+import { Comment } from '@/types';
+import api from '@/services/api';
 
 interface CommentsState {
   comments: Comment[];
